@@ -1,0 +1,53 @@
+clear
+ls
+exa
+exa | table
+exa | type === "dir" | table 
+ls | type === "dir" | table 
+ls
+ls | where size > 340B
+ls | where size > 1MB
+clear
+ls
+tree
+clear
+ls
+clear
+ls -a
+la
+clear
+exa
+ls --icons
+ps
+ps aux
+^ps aux
+clear
+^ls
+\ls
+^ls
+^ps
+help cd
+help exa
+help ls
+help mv
+core-ls
+clear
+ls
+ps
+cd documents
+ls
+cd
+clear
+ls
+clear
+ls -a
+exa
+exa | table
+clear
+exa --icons --color=always
+clear
+ls -a
+open .bashrc
+exa -l | lines | parse "{perms} {user} {size} {name}" | to table
+exa -l | lines | parse "{perms} {user} {size} {name}" |table
+clear

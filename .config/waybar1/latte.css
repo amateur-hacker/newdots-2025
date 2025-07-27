@@ -1,0 +1,106 @@
+* {
+  min-height: 0;
+  font-family: JetBrainsMonoNerd Font;
+  /* font-size: 13px; */
+  font-size: 100%;
+  font-weight: bold;
+}
+
+window#waybar {
+  transition-property: background-color;
+  transition-duration: 0.5s;
+  background-color: transparent;
+}
+
+/* window#waybar.hidden { */
+/*   opacity: 0.5; */
+/* } */
+
+#workspaces {
+  background-color: #dce0e8;
+  border-radius: 15px;
+  border: 0px;
+  font-style: normal;
+  padding: 3px 6px;
+  opacity: 0.8;
+}
+
+#workspaces button {
+  padding: 1px 1px;
+  margin: 0px 3px;
+  border-radius: 15px;
+  border: 0px;
+  color: #1e1e2e;
+  background-color: #dce0e8;
+  transition: all 0.2s ease-in-out;
+}
+
+#workspaces button.active {
+  color: #cdd6f4;
+  /* background: #cdd6f4; */
+  background: #7f849c;
+  border-radius: 15px;
+  min-width: 40px;
+  transition: all 0.2s ease-in-out;
+}
+
+#workspaces button.urgent {
+  background-color: #d20f39;
+  color: #cdd6f4;
+  min-width: 40px;
+  transition: all 0.2s ease-in-out;
+}
+
+#clock,
+#pulseaudio,
+#backlight,
+#battery,
+#cpu,
+#tray,
+#memory,
+#window {
+  border-radius: 15px;
+  background-color: #dce0e8;
+  padding: 3px 6px;
+  color: #1e1e2e;
+  opacity: 0.8;
+}
+
+tooltip {
+  background-color: #dce0e8;
+  color: #1e1e2e;
+  border-radius: 8px;
+}
+
+/* window#waybar.empty #window { */
+/*   background-color: transparent; */
+/* } */
+
+/* #cpu { */
+/*   color: #d20f39; */
+/* } */
+/**/
+/* #memory { */
+/*   color: #df8e1d; */
+/* } */
+/**/
+/* #battery { */
+/*   color: #179299; */
+/* } */
+/**/
+/* #pulseaudio { */
+/*   color: #1e66f5; */
+/* } */
+/**/
+/* #backlight { */
+/*   color: #7287fd; */
+/* } */
+/**/
+/* #clock { */
+/*   color: #dd7878; */
+/* } */
+/**/
+/* tooltip { */
+/*   border-radius: 8px; */
+/*   background-color: #11111b; */
+/* } */

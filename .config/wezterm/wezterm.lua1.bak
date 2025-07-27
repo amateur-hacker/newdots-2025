@@ -1,0 +1,164 @@
+local wezterm = require("wezterm")
+local config = wezterm.config_builder()
+
+config = {
+	enable_wayland = true,
+	color_scheme = "Catppuccin Mocha",
+	font_size = 16,
+	debug_key_events = true,
+	leader = { key = "raw:65", mods = "CTRL" },
+	-- font = wezterm.font("JetBrains Mono Nerd Font", { weight = "DemiBold" }),
+	-- font = wezterm.font("JetBrains Mono Nerd Font", { weight = "DemiBold" }),
+	font = wezterm.font_with_fallback({
+		{ family = "Maple Mono", weight = "Medium", harfbuzz_features = { "+calt", "+liga" } },
+		"JetBrainsMono Nerd Font",
+		"Noto Color Emoji",
+		"Symbols Nerd Font Mono",
+	}),
+
+	-- font = wezterm.font_with_fallback({ "Operator Mono Lig", "JetBrains Mono Nerd Font" }),
+	-- font = wezterm.font_with_fallback({ "JetBrains Mono Nerd Font", "Noto Color Emoji", "Symbols Nerd Font Mono" }),
+
+	-- font = wezterm.font_with_fallback({
+	-- 	{ family = "Operator Mono Lig", weight = "Regular", style = "Italic" },
+	-- 	"JetBrains Mono Nerd Font",
+	-- 	"Noto Color Emoji",
+	-- }),
+
+	window_background_opacity = 1,
+	window_close_confirmation = "NeverPrompt",
+	tab_bar_at_bottom = true,
+	use_fancy_tab_bar = false,
+	hide_tab_bar_if_only_one_tab = true,
+	show_new_tab_button_in_tab_bar = false,
+	audible_bell = "Disabled",
+	default_cursor_style = "SteadyUnderline",
+	disable_default_key_bindings = true,
+	keys = {
+		-- { key = "T", mods = "CTRL|SHIFT", action = wezterm.action.DisableDefaultAssignment },
+		-- { key = "W", mods = "CTRL|SHIFT", action = wezterm.action.DisableDefaultAssignment },
+		-- { key = "Tab", mods = "CTRL", action = wezterm.action.DisableDefaultAssignment },
+		-- { key = "Tab", mods = "CTRL|SHIFT", action = wezterm.action.DisableDefaultAssignment },
+		-- { key = "c", mods = "CTRL", action = wezterm.action.DisableDefaultAssignment },
+		-- { key = "v", mods = "CTRL", action = wezterm.action.DisableDefaultAssignment },
+
+		{ key = "j", mods = "CTRL|SHIFT", action = wezterm.action.SpawnTab("CurrentPaneDomain") },
+		{ key = "k", mods = "CTRL|SHIFT", action = wezterm.action.CloseCurrentTab({ confirm = false }) },
+		{ key = "h", mods = "CTRL|SHIFT", action = wezterm.action.ActivateTabRelative(-1) },
+		{ key = "l", mods = "CTRL|SHIFT", action = wezterm.action.ActivateTabRelative(1) },
+		{
+			key = "raw:60",
+			mods = "CTRL|SHIFT",
+			action = wezterm.action.MoveTabRelative(1),
+		},
+		{
+			key = "raw:59",
+			mods = "CTRL|SHIFT",
+			action = wezterm.action.MoveTabRelative(-1),
+		},
+		{
+			key = "r",
+			mods = "CTRL|SHIFT",
+			action = wezterm.action.ReloadConfiguration,
+		},
+		{
+			key = "c",
+			mods = "CTRL",
+			action = wezterm.action_callback(function(window, pane)
+				local has_selection = window:get_selection_text_for_pane(pane) ~= ""
+				if has_selection then
+					window:perform_action(wezterm.action.CopyTo("ClipboardAndPrimarySelection"), pane)
+				else
+					window:perform_action(wezterm.action.SendKey({ key = "c", mods = "CTRL" }), pane)
+				end
+			end),
+		},
+		{ key = "c", mods = "CTRL|SHIFT", action = wezterm.action.CopyTo("ClipboardAndPrimarySelection") },
+		{ key = "v", mods = "CTRL|SHIFT", action = wezterm.action.PasteFrom("PrimarySelection") },
+		{ key = "=", mods = "CTRL", action = wezterm.action.IncreaseFontSize },
+		{ key = "-", mods = "CTRL", action = wezterm.action.DecreaseFontSize },
+		{ key = "0", mods = "CTRL", action = wezterm.action.ResetFontSize },
+		-- { key = "{", mods = "CTRL|SHIFT", action = wezterm.action.MoveTabRelative(-1) },
+		-- { key = "}", mods = "CTRL|SHIFT", action = wezterm.action.MoveTabRelative(1) },
+		{ key = "X", mods = "CTRL", action = wezterm.action.ActivateCopyMode },
+		{
+			key = "|",
+			mods = "CTRL|SHIFT",
+			action = wezterm.action.SplitHorizontal({ domain = "CurrentPaneDomain" }),
+		},
+		{
+			key = "_",
+			mods = "CTRL|SHIFT",
+			action = wezterm.action.SplitVertical({ domain = "CurrentPaneDomain" }),
+		},
+		{
+			key = "w",
+			mods = "CTRL|SHIFT",
+			action = wezterm.action.CloseCurrentPane({ confirm = true }),
+		},
+		{
+			key = "j",
+			mods = "ALT|CTRL|SHIFT",
+			action = wezterm.action.ActivatePaneDirection("Next"),
+		},
+		{
+			key = "k",
+			mods = "ALT|CTRL|SHIFT",
+			action = wezterm.action.ActivatePaneDirection("Prev"),
+		},
+		{ key = "n", mods = "CTRL|SHIFT", action = wezterm.action.SpawnWindow },
+		{
+			key = "h",
+			mods = "LEADER",
+			action = wezterm.action.ActivatePaneDirection("Left"),
+		},
+		{
+			key = "j",
+			mods = "LEADER",
+			action = wezterm.action.ActivatePaneDirection("Down"),
+		},
+		{
+			key = "k",
+			mods = "LEADER",
+			action = wezterm.action.ActivatePaneDirection("Up"),
+		},
+		{
+			key = "l",
+			mods = "LEADER",
+			action = wezterm.action.ActivatePaneDirection("Right"),
+		},
+		{
+			key = "H",
+			mods = "LEADER",
+			action = wezterm.action.AdjustPaneSize({ "Left", 5 }),
+		},
+		{
+			key = "J",
+			mods = "LEADER",
+			action = wezterm.action.AdjustPaneSize({ "Down", 5 }),
+		},
+		{ key = "K", mods = "LEADER", action = wezterm.action.AdjustPaneSize({ "Up", 5 }) },
+		{
+			key = "L",
+			mods = "LEADER",
+			action = wezterm.action.AdjustPaneSize({ "Right", 5 }),
+		},
+	},
+	mouse_bindings = {
+		{
+			event = { Up = { streak = 1, button = "Left" } },
+			mods = "CTRL",
+			action = wezterm.action.OpenLinkAtMouseCursor,
+		},
+	},
+}
+
+for i = 1, 8 do
+	table.insert(config.keys, {
+		key = tostring(i),
+		mods = "CTRL|ALT",
+		action = wezterm.action.MoveTab(i - 1),
+	})
+end
+
+return config

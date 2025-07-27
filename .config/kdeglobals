@@ -1,0 +1,14 @@
+[Colors:View]
+BackgroundNormal=#00000000
+
+[General]
+TerminalApplication=wezterm
+
+[Icons]
+Theme=Tela-circle-blue-dark
+
+[UiSettings]
+ColorScheme=colors
+
+[Wallet]
+enabled=false

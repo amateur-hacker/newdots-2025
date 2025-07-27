@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+# tput clear
+exec kitten icat --clear --stdin no --transfer-mode memory </dev/null >/dev/tty
+# kitty +kitten icat --clear --stdin no --silent --transfer-mode file </dev/null >/dev/tty
+# tput cup 0 0
+# tput ed
+# printf '\033[?80l'

@@ -1,0 +1,39 @@
+# Directory navigation
+alias ..='cd ..'
+alias .2='cd ../..'
+alias .3='cd ../../..'
+alias .4='cd ../../../..'
+alias .5='cd ../../../../..'
+
+# Common command settings
+alias cp="cp -iv"
+alias mv="mv -iv"
+alias rm="rm -vI"
+alias bc="bc -ql"
+alias qalc="qalc -t"
+alias mkdir="mkdir -pv"
+alias locate="plocate"
+alias tp="trash-put"
+alias tpr="trash-restore"
+alias grep='grep --color=always'
+alias rg='rg --smart-case --color=always'
+alias ln='ln -iv'
+alias chmod='chmod -v'
+alias chown='chown -v'
+alias ls='exa --icons --color=always --group-directories-first'
+alias la='exa -a --icons --color=always --group-directories-first'
+alias ll='exa -al --icons --color=always --group-directories-first'
+alias lt='exa -aT --icons --color=always --group-directories-first'
+alias l.='exa -d --icons --color=always --group-directories-first .*'
+
+# Application shortcuts
+alias v="nvim"
+alias za="zathura"
+
+# Clean home directory usage
+alias wget="wget --hsts-file=\"$XDG_DATA_HOME/wget-hsts\""
+
+# Change the default shell
+alias tobash="chsh $USER -s /bin/bash && echo 'Log out and log back in to apply changes.'"
+alias tozsh="chsh $USER -s /bin/zsh && echo 'Log out and log back in to apply changes.'"
+alias tofish="chsh $USER -s /bin/fish && echo 'Log out and log back in to apply changes.'"

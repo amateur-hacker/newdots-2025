@@ -1,0 +1,109 @@
+* {
+  min-height: 0;
+  font-family: "JetBrains Mono Nerd Font";
+  font-size: 97%;
+  font-weight: bold;
+  font-feature-settings: '"zero", "ss01", "ss02", "ss03", "ss04", "ss05", "cv31"';
+  box-shadow: none;
+  text-shadow: none;
+  transition-duration: 0;
+}
+
+window#waybar {
+  background: rgba(24, 24, 37, 0.6);
+  border-radius: 10px;
+  border: 2px solid rgba(88, 91, 112, 0.8);
+}
+
+tooltip {
+  background: #181825;
+  border-radius: 8px;
+}
+
+tooltip label {
+  color: #cba6f7;
+  margin: 0 2px;
+}
+
+.modules-left,
+.modules-center,
+.modules-right {
+  padding: 10px;
+  border: 2px solid transparent;
+}
+
+/* #window, */
+/* #workspaces, */
+/* #cpu, */
+/* #memory, */
+/* #submap, */
+/* #clock, */
+/* #pulseaudio, */
+/* #backlight, */
+/* #battery, */
+/* #tray { */
+/* } */
+
+#workspaces button {
+  color: #6e6a86;
+  padding: 0;
+}
+
+#workspaces button.active {
+  color: #cba6f7;
+}
+
+#workspaces button.urgent {
+  color: #f7768e;
+}
+
+#workspaces button:hover {
+  color: #9ccfd8;
+}
+
+#cpu {
+  color: #f38ba8;
+}
+
+#memory {
+  color: #f9e2af;
+}
+
+#submap {
+  color: #cdd6f4;
+}
+
+#clock {
+  color: #f5c2e7;
+}
+
+#pulseaudio {
+  color: #89b4fa;
+}
+
+#backlight {
+  color: #b4befe;
+}
+
+#battery {
+  color: #cba6f7;
+}
+
+#battery.charging {
+  color: #94e2d5;
+}
+
+@keyframes blink {
+  to {
+    color: #cba6f7;
+  }
+}
+
+#battery.critical:not(.charging) {
+  color: #f7768e;
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}

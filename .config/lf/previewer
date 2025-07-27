@@ -1,0 +1,90 @@
+#!/usr/bin/env bash
+
+file=$1
+w=$2
+h=$3
+x=$4
+y=$5
+
+CACHE_DIR=$HOME/.cache/lf
+
+preview() {
+  kitten icat --silent --stdin no --transfer-mode memory --place "${w}x${h}@${x}x${y}" "$1" </dev/null >/dev/tty
+  # chafa -f sixel -s "${w}x${h}" --animate off --polite on -t 1 --bg "#000000" "$1"
+  # wezterm imgcat --width "$w" --height "$h" --position "$x,$y" "$1"
+}
+
+batorcat() {
+  if command -v bat >/dev/null 2>&1; then
+    bat --color=always --style=plain --pager=never "$file" "$@"
+  else
+    cat "$1"
+  fi
+}
+
+glowormdcat() {
+  if command -v glow >/dev/null 2>&1; then
+    glow "$1"
+  else
+    mdcat "$1"
+  fi
+}
+
+# file="$1"
+# shift
+case "$(basename "$file" | tr '[A-Z]' '[a-z]')" in
+*.tgz | *.tar.gz) tar tzf "$file" ;;
+*.tar.bz2 | *.tbz2) tar tjf "$file" ;;
+*.tar.txz | *.txz) xz --list "$file" ;;
+*.tar) tar tf "$file" ;;
+*.zip | *.jar | *.war | *.ear | *.oxt) unzip -l "$file" ;;
+*.gz) gzip -l "$file" ;;
+*.rar) unrar l "$file" ;;
+*.md) glowormdcat "$file" ;;
+*.7z) 7z l "$file" ;;
+*.[1-8]) man "$file" | col -b ;;
+*.o) nm "$file" ;;
+*.torrent) transmission-show "$file" ;;
+*.iso) iso-info --no-header -l "$file" ;;
+*.odt | *.ods | *.odp | *.sxw) odt2txt "$file" ;;
+*.doc) catdoc "$file" ;;
+*.docx) docx2txt "$file" ;;
+*.xml | *.html) w3m -dump "$file" ;;
+*.xls | *.xlsx)
+  ssconvert --export-type=Gnumeric_stf:stf_csv "$file" "fd://1" | batorcat --language=csv
+  ;;
+*.wav | *.mp3 | *.flac | *.m4a | *.wma | *.ape | *.ac3 | *.og[agx] | *.spx | *.opus | *.as[fx] | *.mka)
+  exiftool "$file"
+  ;;
+*.pdf)
+  thumbnail="$CACHE_DIR/thumbnail.png"
+  pdftoppm -jpeg -f 1 -singlefile "$1" "$thumbnail"
+  preview "$thumbnail"
+  ;;
+*.epub)
+  thumbnail="$CACHE_DIR/thumbnail.png"
+  epub-thumbnailer "$file" "$thumbnail" 1024
+  preview "$thumbnail"
+  ;;
+*.cbz | *.cbr | *.cbt)
+  thumbnail="$CACHE_DIR/thumbnail.png"
+  comicthumb "$file" "$CACHE" 1024
+  preview "$thumbnail"
+  ;;
+*.avi | *.mp4 | *.wmv | *.dat | *.3gp | *.ogv | *.mkv | *.mpg | *.mpeg | *.vob | *.fl[icv] | *.m2v | *.mov | *.webm | *.ts | *.mts | *.m4v | *.r[am] | *.qt | *.divx)
+  thumbnail="$CACHE_DIR/thumbnail.png"
+  ffmpegthumbnailer -i "$file" -o "$thumbnail" -s 0
+  preview "$thumbnail"
+  ;;
+*.bmp | *.jpg | *.jpeg | *.png | *.xpm | *.webp | *.tiff | *.gif | *.jfif | *.ico)
+  preview "$file"
+  ;;
+*.svg)
+  thumbnail="$CACHE_DIR/thumbnail.png"
+  convert "$file" "$thumbnail"
+  preview "$thumbnail"
+  ;;
+*.ino) batorcat --language=cpp "$1" ;;
+*) file -ibL "$1" | grep -q text && batorcat "$1" || file -Lb "$1" ;;
+esac
+return 127

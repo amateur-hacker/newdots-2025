@@ -1,0 +1,261 @@
+set ratios 1:2:3
+# set cleaner ~/.config/lf/cleaner
+# set previewer ~/.config/lf/previewer
+# set previewer pistol
+
+# set sixel true
+
+set previewer ctpv
+set cleaner ctpvclear
+set sixel true
+&ctpv -s $id
+&ctpvquit $id
+
+# Basic Settings
+set hidden true
+set ignorecase true
+set icons true
+
+# Custom Functions
+cmd open ${{
+    case $(mimetype -b "$fx") in
+        text/*|application/x-tiled-tsx|application/json) $EDITOR "$fx";;
+        audio/*) clear && mpv --no-video "$fx";;
+        video/*|image/gif) clear && mpv "$fx";;
+        image/*) clear && imv "$fx";;
+        application/pdf) clear && zathura "$fx";;
+        *) xdg-open "$fx" ;;
+    esac
+}}
+
+cmd mkfiledir ${{
+  clear; set -f
+  trap 'exit' SIGINT
+  current_dir=$(pwd | sed "s|/home/$USER|~|")
+  printf "Create file/folder in $current_dir"
+  printf "%s\n\t=> "
+  read -a paths
+  for path in "${paths[@]}"; do
+    if [[ $path == */ ]]; then
+      mkdir -p "$path"
+    elif [[ $path == */* ]]; then
+      dir=$(dirname "$path")
+      mkdir -p "$dir"
+      touch "$path"
+    else
+      touch "$path"
+    fi
+  done
+}}
+
+cmd handlechmod ${{
+  clear; set -f
+  trap 'exit' SIGINT
+  IFS=$'\n'
+  file_count=$(echo "$fx" | wc -w)
+  if [ $file_count -eq 1 ]; then
+    file=$fx
+    if [ -f "$file" ]; then
+      file_name=$(basename "$file")
+      if [ -x "$file" ]; then
+        printf "$file_name is already executable. remove execute permission?[y/n] "
+        printf "%s\n\t=> "
+        read ans
+        [ -z $ans ] && ans="y"
+        if [ $ans = "y" ]; then
+          chmod -x "$file"
+        fi
+      else
+        printf "$file_name is not executable. add execute permission?[y/n] "
+        printf "%s\n\t=> "
+        read ans
+        [ -z $ans ] && ans="y"
+        if [ $ans = "y" ]; then
+          chmod +x "$file"
+        fi
+      fi
+      lf -remote 'send reload'
+    else
+      echo "file not found: $file"
+    fi
+  else
+    printf "do you want to make the selected files vice versa of their current executable status? [y/n] "
+    printf "%s\n\t=> "
+    read ans
+    [ -z $ans ] && ans="y"
+    [ $ans = "y" ] && {
+      for file in $fx; do
+        if [ -f "$file" ]; then
+          if [ -x "$file" ]; then
+            chmod -x "$file"
+          else
+            chmod +x "$file"
+          fi
+        lf -remote 'send reload'
+        else
+          echo "file not found: $file"
+        fi
+      done
+    }
+  fi
+}}
+
+cmd docsendwithtgcli ${{
+  clear; set -f
+  trap 'exit' SIGINT
+  doc="$fx"
+  type=$(mimetype "$doc" | cut -d ":" -f 2 | cut -d "/" -f 2)
+  [ "$type" == "directory" ] && type="folder" || type="file"
+  printf "$doc"
+  printf "confirm to send $type?[y/n] "
+  printf "%s\n\t=> "
+  read ans
+  [ -z $ans ] && ans="n"
+  [ $ans = "y" ] && setsid -f tg-cli -f "$doc" >/dev/null 2>&1 &
+}}
+
+cmd messagesendwithtgcli ${{
+  clear; set -f
+  trap 'exit' SIGINT
+  printf "%s\n\t" "Type your message to send otherwise type (q) for quit: "
+  printf "%s\n\t=> "
+  read ans
+  [ $ans != "q" ] && setsid -f tg-cli -m "$ans"  >dev/null 2>&1 &|| echo "quit"
+}}
+
+cmd delete ${{
+  clear; set -f
+  trap 'exit' SIGINT
+  items=$(printf "$fx" | tr '\n' ';')
+  while [ "$items" ]; do
+    item=${items%%;*}
+    printf "%s " "$(basename "$item")"
+    printf "delete? [p/t/n]: "
+    printf "%s\n\t=> "
+    read -r ans
+    if [[ $ans == "p" || $ans == "t" ]]; then
+      printf "Are you sure? [y/n]: "
+      printf "%s\n\t=> "
+      read -r confirm
+      if [[ $confirm == "y" ]]; then
+        case "$ans" in
+          p)
+            rm -rf "$item"
+            echo "$(basename "$item") deleted successfully."
+          ;;
+          t)
+            trash-put "$item"
+            echo "$(basename "$item") trashed successfully."
+          ;;
+        esac
+      else
+        echo "Action cancelled for $(basename "$item")"
+      fi
+    else
+      echo "No action taken for $(basename "$item")"
+    fi
+    if [ "$items" = "$item" ]; then
+      items=''
+    else
+      items="${items#*;}"
+    fi
+  done
+}}
+
+cmd dp ${{
+  clear; set -f
+
+  trap 'exit' SIGINT
+
+  files="$fx"
+  printf "%s\n" "$files"
+  printf "delete? [y/n] "
+  printf "%s\n\t=> "
+  read -r ans
+  [ -z "$ans" ] && ans="n"
+
+  if [[ $ans == "y" ]]; then
+    rm -rf "$files"
+    echo "Files deleted successfully."
+  else
+    echo "No action taken"
+  fi
+}}
+
+cmd setwallpaper ${{
+   file="$fx"
+   changebg "$file"
+}}
+
+cmd unarchive ${{
+  clear; set -f
+  trap 'exit' SIGINT
+  case $fx in
+    *.tar.bz|*.tar.bz2|*.tbz|*.tbz2) tar xjvf "$fx";;
+    *.tar.gz|*.tgz) tar xzvf "$fx";;
+    *.tar.xz|*.txz) tar xJvf "$fx";;
+    *.tar) tar xvf "$fx";;
+    *.zip) unzip "$fx";;
+    *.rar) unrar x "$fx";;
+    *.7z) 7z x "$fx";;
+    *) echo "Unsupported format";;
+  esac
+}}
+
+cmd restore_trash ${{
+  trash-restore
+}}
+
+cmd empty_trash ${{
+  trash-empty
+}}
+
+cmd select-all :unselect; invert
+
+cmd clear-output ${{
+  clear
+}}
+
+# Unbinds default
+map d
+map m
+map t
+map c
+map q
+map f
+map e
+map l
+
+# Custom mappings
+map a mkfiledir
+map d delete
+map p paste
+map x cut
+map y copy
+map l open
+map A select-all
+map C clear
+map U unarchive
+map P handlechmod
+map H set hidden!
+map tr restore_trash
+map te empty_trash
+map bg setwallpaper
+map R :reload; redraw
+map q :quit; clear-output
+map . mark-save
+map mr mark-remove
+map fs docsendwithtgcli
+map ms messagesendwithtgcli
+
+# Movement
+map gd cd ~/documents
+map gD cd ~/downloads
+map gp cd ~/pictures
+map gm cd ~/music
+map gv cd ~/videos
+map gc cd ~/.config
+map gb cd ~/.local/bin
+map gs cd ~/.local/bin/my-scripts
+map gw cd ~/documents/web-development/my-stuffs
+map gt cd ~/.local/share/Trash/files

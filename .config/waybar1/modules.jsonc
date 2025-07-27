@@ -1,0 +1,131 @@
+{
+  "hyprland/workspaces": {
+    "format": "{icon}",
+    "on-click": "activate",
+    "active-only": false,
+    "all-outputs": false,
+    "sort-by-number": false,
+    "format-icons": {
+      "1": "1",
+      "2": "2",
+      "3": "3",
+      "4": "4",
+      "5": "5",
+      "6": "6",
+      "7": "7",
+      "8": "8",
+      "9": "9",
+      "10": "10",
+    },
+  },
+
+  "cpu": {
+    "format": " {usage}%",
+    "interval": 1,
+    "format-alt-click": "click",
+    "format-alt": "{icon0}{icon1}{icon2}{icon3} {usage:>2}% ",
+    "format-icons": ["▁", "▂", "▃", "▄", "▅", "▆", "▇", "█"],
+  },
+
+  "memory": {
+    "interval": 1,
+    "format": " {}%",
+    "format-alt": " {used:0.1f}G",
+    "format-alt-click": "click",
+    "tooltip": true,
+    "tooltip-format": "{used:0.1f}GB/{total:0.1f}G",
+    "on-click-right": "kitty --title btop sh -c 'btop'"
+  },
+
+  "hyprland/submap": {
+    "format": "<span style=\"italic\">󰌆  {}</span>",
+    "tooltip": false
+  },
+
+  "clock": {
+    "format": " {:%a %b %d, %I:%M %p}",
+    // "format": " {:%I:%M %p}",
+    // "format-alt": " {:%a %b %d}",
+    "tooltip-format": "<tt><small>{calendar}</small></tt>",
+    "calendar": {
+      "mode": "month",
+      "weeks-pos": "right",
+      "on-scroll": 1,
+      "format": {
+        "months": "<span color='#f5e0dc'><b>{}</b></span>",
+        "days": "<span color='#f2cdcd'><b>{}</b></span>",
+        "weeks": "<span color='#94e2d5'><b>W{}</b></span>",
+        "weekdays": "<span color='#f9e2af'><b>{}</b></span>",
+        "today": "<span color='#f38ba8'><b><u>{}</u></b></span>"
+      }
+    }
+  },
+
+  "pulseaudio": {
+    "format": "{icon} {volume}%",
+    "tooltip-format": "Volume {volume}%",
+    "format-bluetooth": "  {volume}%",
+    "format-bluetooth-muted": "婢 ",
+    "format-muted": "婢 Muted",
+    "on-click": "pamixer -t",
+    "on-click-right": "pavucontrol",
+    "on-scroll-down": "pamixer -i 5",
+    "on-scroll-up": "pamixer -d 5",
+    "scroll-step": 5,
+    "smooth-scrolling-threshold": 1,
+
+    "format-icons": {
+      "headphone": "",
+      "hands-free": "",
+      "headset": "",
+      "phone": "",
+      "portable": "",
+      "car": "",
+      "default": ["", "", ""]
+    }
+  },
+
+  "backlight": {
+    "device": "amd_backlight",
+    "format": "{icon} {percent}%",
+    "tooltip-format": "Brightness {percent}%",
+    "format-icons": ["󰃞", "󰃟", "󰃠"],
+    "on-scroll-up": "brightnessctl set 1%-",
+    "on-scroll-down": "brightnessctl set 1%+"
+  },
+
+  "battery": {
+    "interval": 1,
+    "align": 0,
+    "rotate": 0,
+    "bat": "BAT0",
+    "adapter": "ADP0",
+    "full-at": 100,
+    "design-capacity": false,
+    "states": {
+      "good": 91,
+      "warning": 30,
+      "critical": 14
+    },
+    "format": "{icon}  {capacity}%",
+    "format-charging": "  {capacity}%",
+    "format-plugged": "  {capacity}%",
+    "format-full": "{icon}  Full",
+    "format-alt": "{icon}  {time}",
+    "format-icons": ["", "", "", "", ""],
+    "format-time": "{H}h {M}min",
+    "tooltip": true,
+    "tooltip-format": "{timeTo} {power}w"
+  },
+
+  "tray": {
+    "show-passive-items": true,
+    "spacing": 8,
+  },
+
+  "custom/separator#dot-line": {
+    "format": "",
+    "interval": "once",
+    "tooltip": false
+  },
+}

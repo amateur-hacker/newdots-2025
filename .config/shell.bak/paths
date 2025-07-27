@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+
+declare -A CONFIG_PATHS=(
+  ["$HOME/.config"]="bat btop cava dunst fastfetch fish fontconfig fuzzel hypr kitty mpv nvim/init.lua nvim/lua qt5ct qt6ct waybar waypaper wezterm wlogout/(layout|style.css) satty shell starship zathura zsh mimeapps.list"
+  ["/etc"]="pacman.conf"
+)
+
+declare -A SCRIPT_PATHS=(
+  ["$HOME/.local/bin"]="my-scripts"
+  ["$HOME/.config/shell"]="peekr"
+)

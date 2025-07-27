@@ -1,0 +1,85 @@
+@import "./colors.css";
+
+* {
+  min-height: 0;
+  font-family: "JetBrainsMono Nerd Font";
+  font-size: 13px;
+  font-weight: bold;
+  box-shadow: none;
+  text-shadow: none;
+  transition-duration: 0;
+}
+
+tooltip {
+  background: @mantle;
+  border-radius: 10px;
+}
+
+tooltip label {
+  color: @mauve;
+  margin: 0 2px;
+}
+
+#workspaces button {
+  padding: 0;
+  color: @surface2;
+}
+
+#workspaces button.active {
+  color: @mauve;
+}
+
+#workspaces button.urgent {
+  color: shade(@red, 0.9);
+}
+
+#workspaces button:hover {
+  color: @teal;
+}
+
+#cpu {
+  color: @red;
+}
+
+#memory {
+  color: @yellow;
+}
+
+#submap {
+  color: @text;
+}
+
+#clock {
+  color: @pink;
+}
+
+#pulseaudio {
+  color: @blue;
+}
+
+#backlight {
+  color: @lavender;
+}
+
+#battery {
+  color: @mauve;
+}
+
+#battery.charging {
+  color: @teal;
+}
+
+@keyframes blink {
+  to {
+    color: @mauve;
+  }
+}
+
+#battery.critical:not(.charging) {
+  color: shade(@red, 0.9);
+  animation-name: blink;
+  animation-duration: 0.5s;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+}

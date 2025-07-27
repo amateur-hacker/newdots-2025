@@ -1,0 +1,82 @@
+# Set default applications
+export EDITOR="nvim"
+export VISUAL="nvim"
+export TERMINAL="wezterm"
+export BROWSER="zen-browser"
+
+# Define XDG base directories
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+export XDG_CACHE_HOME="$HOME/.cache"
+
+# Define common user directories
+export XDG_DOCUMENTS_DIR="$HOME/documents"
+export XDG_DOWNLOADS_DIR="$HOME/downloads"
+export XDG_MUSIC_DIR="$HOME/music"
+export XDG_PICTURES_DIR="$HOME/pictures"
+export XDG_SCREENSHOTS_DIR="$XDG_PICTURES_DIR/screenshots"
+export XDG_VIDEOS_DIR="$HOME/videos"
+
+# Add ~/.local/bin and its subdirectories to $PATH
+if [ -d "$HOME/.local/bin" ]; then
+  find "$HOME/.local/bin" -maxdepth 1 -type d | while IFS= read -r dir; do
+    case ":$PATH:" in
+    *":$dir:"*) ;;
+    *) PATH="$PATH:$dir" ;;
+    esac
+  done
+fi
+
+# Redirect common app data to XDG paths to clean up $HOME
+export LESSHISTFILE="$XDG_DATA_HOME/less_history"
+export PYTHON_HISTORY="$XDG_DATA_HOME/python/history"
+export XINITRC="$XDG_CONFIG_HOME/x11/xinitrc"
+export XPROFILE="$XDG_CONFIG_HOME/x11/xprofile"
+export XRESOURCES="$XDG_CONFIG_HOME/x11/xresources"
+export GTK2_RC_FILES="$XDG_CONFIG_HOME/gtk-2.0/gtkrc-2.0"
+export WGETRC="$XDG_CONFIG_HOME/wget/wgetrc"
+export PYTHONSTARTUP="$XDG_CONFIG_HOME/python/pythonrc"
+export GNUPGHOME="$XDG_DATA_HOME/gnupg"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export GOPATH="$XDG_DATA_HOME/go"
+export GOBIN="$GOPATH/bin"
+export GOMODCACHE="$XDG_CACHE_HOME/go/mod"
+export NPM_CONFIG_USERCONFIG="$XDG_CONFIG_HOME/npm/npmrc"
+export GRADLE_USER_HOME="$XDG_DATA_HOME/gradle"
+export NUGET_PACKAGES="$XDG_CACHE_HOME/NuGetPackages"
+export _JAVA_OPTIONS="-Djava.util.prefs.userRoot=$XDG_CONFIG_HOME/java"
+export _JAVA_AWT_WM_NONREPARENTING=1
+export PARALLEL_HOME="$XDG_CONFIG_HOME/parallel"
+export FFMPEG_DATADIR="$XDG_CONFIG_HOME/ffmpeg"
+export WINEPREFIX="$XDG_DATA_HOME/wineprefixes/default"
+export ZDOTDIR="$XDG_CONFIG_HOME/zsh"
+export REDISCLI_RCFILE="$XDG_CONFIG_HOME/redis/redisclirc"
+export REDISCLI_HISTFILE="$XDG_DATA_HOME/redis/rediscli_history"
+export W3M_DIR="$XDG_STATE_HOME/w3m"
+export GIT_CONFIG_GLOBAL="$XDG_CONFIG_HOME/git/config"
+
+# Personal environment preferences
+export FULLNAME="$(getent passwd $USER | cut -d ':' -f 5 | cut -d ',' -f 1)"
+export DATE="$(date "+%a, %b %e %I:%M %P")"
+export STARSHIP_CONFIG="$XDG_CONFIG_HOME/starship/starship.toml"
+export MANPAGER="nvim +Man!"
+export ELECTRON_OZONE_PLATFORM_HINT="wayland"
+export NODE_OPTIONS="--no-warnings"
+export ATAC_MAIN_DIR="$XDG_DATA_HOME/share/atac"
+export LS_COLORS=$(dircolors -b | sed "s/^LS_COLORS='//;s/'$//")
+
+# FZF configuration
+export FZF_DEFAULT_OPTS=" \
+--color=bg+:#313244,bg:#1E1E2E,spinner:#F5E0DC,hl:#F38BA8 \
+--color=fg:#CDD6F4,header:#F38BA8,info:#CBA6F7,pointer:#F5E0DC \
+--color=marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8 \
+--color=selected-bg:#45475A \
+--color=border:#313244,label:#CDD6F4 \
+--exact --border --cycle"
+
+# Set the bat theme
+export BAT_THEME="catppuccin-mocha"
+
+# Set locale
+export LC_ALL="en_US.UTF-8"
