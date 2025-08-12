@@ -1,8 +1,8 @@
 # Default applications
 set -x EDITOR nvim
-set -x VISUAL nvim
+set -x VISUAL neovide
 set -x TERMINAL kitty
-set -x BROWSER zen-browser
+set -x BROWSER brave
 
 # XDG base directories
 set -x XDG_CONFIG_HOME "$HOME/.config"
@@ -86,7 +86,7 @@ set -x FZF_DEFAULT_OPTS "\
 --color=marker:#B4BEFE,fg+:#CDD6F4,prompt:#CBA6F7,hl+:#F38BA8 \
 --color=selected-bg:#45475A \
 --color=border:#313244,label:#CDD6F4 \
---exact --border --cycle"
+--exact --border --cycle --height 40% --reverse"
 
 # 'Catppuccin Mocha' theme (bat)
 set -x BAT_THEME catppuccin-mocha

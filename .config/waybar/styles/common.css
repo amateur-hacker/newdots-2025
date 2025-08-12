@@ -2,7 +2,7 @@
 
 * {
   min-height: 0;
-  font-family: "JetBrainsMono Nerd Font";
+  font-family: "Maple Mono NF";
   font-size: 13px;
   font-weight: bold;
   box-shadow: none;
@@ -10,7 +10,24 @@
   transition-duration: 0;
 }
 
-tooltip {
+#workspaces,
+#cpu,
+#memory,
+#submap,
+#clock,
+#pulseaudio,
+#backlight,
+#battery,
+#bluetooth,
+#tray {
+  padding: 0 2px;
+}
+
+#network {
+  padding: 0 6px;
+}
+
+#tooltip {
   background: @mantle;
   border-radius: 10px;
 }

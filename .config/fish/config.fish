@@ -15,7 +15,7 @@ function fish_user_key_bindings
     bind Y fish_clipboard_copy
     bind p fish_clipboard_paste
     bind -M visual -m default y 'fish_clipboard_copy; commandline -f end-selection repaint-mode'
-    bind -M insert -m default jk 'commandline -f repaint'
+    # bind -M insert -m default jk 'commandline -f repaint'
     bind --erase --preset -M visual \ev
     bind --erase --preset -M insert \ev
 end

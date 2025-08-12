@@ -114,9 +114,13 @@ end
 # Search files in current directory
 function peekr_search_files_cwd --description 'fzf pick file(s) (cwd)'
     set -l files (
-        eza -1af --git-ignore --color=never -I ".git" |
-        grep -vE '/$' | grep -vE '^\.\.?$' |
-        sed 's/[*@/]$//'
+      find . -maxdepth 1 -mindepth 1 \( -type f -o -type l \) \
+        | grep -v '/\.git/' \
+        | grep -vE '^\./\.\.?$' \
+        | sed 's|^\./||' \
+        | awk '{print ($0 ~ /^\./ ? "0" : "1") " " $0}' \
+        | sort -k1,1 -k2,2f \
+        | cut -d' ' -f2-
     )
     open_selected_files search_files_cwd $files
 end
@@ -124,9 +128,13 @@ end
 # Search nested files
 function peekr_search_nested_files_cwd --description 'fzf pick file(s) (nested)'
     set -l files (
-        tree -Fifa --gitignore -I ".git" --noreport |
-        grep -v '/$' | grep -vE '^\./\.\.?$' |
-        sed 's|^\./||; s/[*@/]$//'
+      find . \( -type f -o -type l \) \
+        | grep -v '/\.git/' \
+        | grep -vE '^\./\.\.?$' \
+        | sed 's|^\./||' \
+        | awk '{print ($0 ~ /^\./ ? "0" : "1") " " $0}' \
+        | sort -k1,1 -k2,2f \
+        | cut -d' ' -f2-
     )
     open_selected_files search_nested_files_cwd $files
 end
@@ -134,9 +142,12 @@ end
 # Select directory in current directory
 function peekr_select_dir_cwd --description 'fzf cd (cwd)'
     set -l dir (
-        eza -aD --git-ignore -I ".git" |
-        grep -vE '^\.\.?$' |
-        fzf --header="select_dir_cwd" --header-first
+      find . -maxdepth 1 -mindepth 1 -type d ! -name '.git' \
+        | sed 's|^\./||' \
+        | awk '{print ($0 ~ /^\./ ? "0" : "1") " " $0}' \
+        | sort -k1,1 -k2,2f \
+        | cut -d' ' -f2- \
+        | fzf --header="select_dir_cwd" --header-first
     )
     test -n "$dir"; and cd "$dir"
 end
@@ -144,10 +155,12 @@ end
 # Select nested directory
 function peekr_select_nested_dir_cwd --description 'fzf cd (nested)'
     set -l dir (
-        tree -fida --gitignore -I ".git" --noreport |
-        tail -n +2 | grep -vE '^\./\.\.?$' |
-        sed 's|^\./||; s/[*@/]$//' |
-        fzf --header="select_nested_dir_cwd" --header-first
+      find . -mindepth 1 -type d ! -name '.git' \
+        | sed 's|^\./||' \
+        | awk '{print ($0 ~ /^\./ ? "0" : "1") " " $0}' \
+        | sort -k1,1 -k2,2f \
+        | cut -d' ' -f2- \
+        | fzf --header="select_nested_dir_cwd" --header-first
     )
     test -n "$dir"; and cd "$dir"
 end
